@@ -1,0 +1,131 @@
+module Gurra
+
+App 1.0 App.qml
+internal AppUi AppUi.qml
+AppColors 1.0 AppColors.qml
+Lazy 1.0 Lazy.qml
+LazyPage 1.0 LazyPage.qml
+CenterIn 1.0 CenterIn.qml
+Collapsable 1.0 Collapsable.qml
+DatePicker 1.0 DatePicker.qml
+YearColumn 1.0 YearColumn.qml
+MonthColumn 1.0 MonthColumn.qml
+DayColumn 1.0 DayColumn.qml
+Fab 1.0 Fab.qml
+Fonts 1.0 Fonts.qml
+Half 1.0 Half.qml
+HorizontalLine 1.0 HorizontalLine.qml
+Icon 1.0 Icon.qml
+BigIcon 1.0 BigIcon.qml
+IconButton 1.0 IconButton.qml
+IconFonts 1.0 IconFonts.qml
+IconLabel 1.0 IconLabel.qml
+Icons 1.0 Icons.qml
+IconTextField 1.0 IconTextField.qml
+InfoMessage 1.0 InfoMessage.qml
+Label 1.0 Label.qml
+Link 1.0 Link.qml
+LinkLabel 1.0 LinkLabel.qml
+Logo 1.0 Logo.qml
+LogoText 1.0 LogoText.qml
+Margins 1.0 Margins.qml
+NetworkErrors 1.0 NetworkErrors.qml
+Snackbar 1.0 Snackbar.qml
+AnaPage 1.0 AnaPage.qml
+PageTitle 1.0 PageTitle.qml
+Pagination 1.0 Pagination.qml
+Avatar 1.0 Avatar.qml
+ProgressCircular 1.0 ProgressCircular.qml
+Rating 1.0 Rating.qml
+RestfulDelegate 1.0 RestfulDelegate.qml
+Shadow 1.0 Shadow.qml
+ShadowRect 1.0 ShadowRect.qml
+Sizes 1.0 Sizes.qml
+SoundEffects 1.0 SoundEffects.qml
+Space 1.0 Space.qml
+Spacing 1.0 Spacing.qml
+StatusColors 1.0 StatusColors.qml
+Strings 1.0 Strings.qml
+Tabs 1.0 Tabs.qml
+Theme 1.0 Theme.qml
+TimePicker 1.0 TimePicker.qml
+TimeColumn 1.0 TimeColumn.qml
+Urls 1.0 Urls.qml
+Validators 1.0 Validators.qml
+VerticalLine 1.0 VerticalLine.qml
+Loading 1.0 Loading.qml
+Uploader 1.0 Uploader.qml
+Section 1.0 Section.qml
+
+Background 1.0 Background.qml
+Jumbotron 1.0 Jumbotron.qml
+Margins2 1.0 Margins2.qml
+PullToRefresh 1.0 PullToRefresh.qml
+AnaView 1.0 AnaView.qml
+
+Query 1.0 Query.qml
+ResourceApi 1.0 ResourceApi.qml
+
+afiado 1.0 assets/fonts/afiado.ttf
+brankit 1.0 assets/fonts/brankit.ttf
+entipoPlus 1.0 assets/fonts/entipoPlus.ttf
+feather 1.0 assets/fonts/feather.ttf
+fontawesome 1.0 assets/fonts/fontawesome.ttf
+hawcons 1.0 assets/fonts/hawcons.ttf
+icomoon 1.0 assets/fonts/icomoon.ttf
+linecons 1.0 assets/fonts/linecons.ttf
+material 1.0 assets/fonts/material.ttf
+meteocons 1.0 assets/fonts/meteocons.ttf
+octicons 1.0 assets/fonts/octicons.ttf
+typicons 1.0 assets/fonts/typicons.ttf
+wpzoom 1.0 assets/fonts/wpzoom.ttf
+
+Confirm 1.0 dialogs/Confirm.qml
+Message 1.0 dialogs/Message.qml
+Done 1.0 dialogs/Done.qml
+Preview 1.0 dialogs/Preview.qml
+Thumbnail 1.0 Thumbnail.qml
+
+NumberInput 1.0 inputs/NumberInput.qml
+PhoneNumberInput 1.0 inputs/PhoneNumberInput.qml
+EmailInput 1.0 inputs/EmailInput.qml
+FormatedNumberInput 1.0 inputs/FormatedNumberInput.qml
+PasswordInput 1.0 inputs/PasswordInput.qml
+
+PasswordDialog 1.0 dialogs/PasswordDialog.qml
+ValueInput 1.0 dialogs/ValueInput.qml
+
+ListItem 1.0 ListItem.qml
+ItemPicker 1.0 dialogs/ItemPicker.qml
+GridPicker 1.0 dialogs/GridPicker.qml
+ListPicker 1.0 dialogs/ListPicker.qml
+
+TimeLine 1.0 TimeLine.qml
+TimeLineItem 1.0 TimeLineItem.qml
+
+DialogParams 1.0 DialogParams.qml
+Params 1.0 Params.qml
+
+Badge 1.0 Badge.qml
+Wrapper 1.0 Wrapper.qml
+
+EmojieKeyboard 1.0 extra/EmojieKeyboard.qml
+GooglePalette 1.0 extra/GooglePalette.qml
+
+Afiado 1.0 fonts/Afiado.qml
+Brankit 1.0 fonts/Brankit.qml
+EntipoPlus 1.0 fonts/EntipoPlus.qml
+Feather 1.0 fonts/Feather.qml
+FontAwesome 1.0 fonts/FontAwesome.qml
+Hawcons 1.0 fonts/Hawcons.qml
+Icomoon 1.0 fonts/Icomoon.qml
+Linecons 1.0 fonts/Linecons.qml
+MaterialFont 1.0 fonts/Material.qml
+Meteocons 1.0 fonts/Meteocons.qml
+Octicons 1.0 fonts/Octicons.qml
+Typicons 1.0 fonts/Typicons.qml
+Wpzoom 1.0 fonts/Wpzoom.qml
+
+AboutPage 1.0 pages/AboutPage.qml
+
+

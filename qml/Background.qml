@@ -1,0 +1,7 @@
+import QtQuick 2.0
+
+Rectangle {
+    anchors.fill: parent
+    color: app.colors.primary
+}
+
