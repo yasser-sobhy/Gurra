@@ -1,2 +1,2 @@
-# gurra
+# Gurra
 QML ui framework
