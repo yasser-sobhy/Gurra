@@ -6,7 +6,7 @@
 Download app.tar.gz template, extract it and start coding :)
 
 ##Screenshots
-[enter link description here](/screenshots/README.md)
+[screenshots](/screenshots/README.md)
 
 ##Getting Started
 
