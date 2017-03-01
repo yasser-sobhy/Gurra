@@ -1,5 +1,5 @@
    
-#App is Gurra's root component, it manages the lifecycle of a Gurra app.
+#App is Gurra's root component. It manages the lifecycle of a Gurra app.
 
     import QtQuick 2.7
 	import QtQuick.Controls 2.0
@@ -36,13 +36,13 @@
    
 #Properties
    
-  **production**: bool
+###**production**: bool
 
       default: true
       
 This property holds whether the app is running in production mode or debug mode.
 
-  **api**: QtObject
+###**api**: QtObject
   
   This property holds all app restful api 
   
@@ -57,20 +57,20 @@ This property holds whether the app is running in production mode or debug mode.
     	          console.log(response)
             })
         
-  **logic**: QtObject
+###**logic**: QtObject
 
 This property holds all app logic 
 
     app.logic.login(user_id)
 
- **pages**: Item
+###**pages**: Item
  
  This property holds all app pages
 
     app.pushPage(app.pages.search)
 
  
- **headers**: Item
+###**headers**: Item
  
   This property holds headers for all pages of the app
   
@@ -89,18 +89,18 @@ This property holds all app logic
 
  > **See** footers
 
- **footers**: Item
+###**footers**: Item
 
   This property holds footer for all pages of the app
 
 > **See** headers
 
- **Urls** urls: 
+###**Urls** urls: 
   This property holds all urls of the app
 
       default: Urls{}
 
-Example: 
+**Example:** 
 
     Image {
             Layout.fillWidth: true
@@ -109,11 +109,13 @@ Example:
             source = app.urls.pictures + image_id
      }
 
-  **fonts**:  Fonts
+###**fonts**:  Fonts
 
       default: Fonts{}
 
 This property holds all app loaded fonts
+
+**Defining Custom fonts**
 
 */Custom/Fonts.qml*
 
@@ -137,7 +139,7 @@ This property holds all app loaded fonts
        fonts: Custom.Fonts{}
     }
 
-*Usage*
+**Usage**
 
         Label
         {
@@ -148,14 +150,14 @@ This property holds all app loaded fonts
         }
 
 
-  **icons**: Icons
+###**icons**: Icons
 
       default: Icons{}
 
 This property holds all available app icons
 
 
-  **iconFonts**: IconFonts
+###**iconFonts**: IconFonts
 
       default: IconFonts{}
       
@@ -164,7 +166,7 @@ This property holds all available icon fonts. Icon fonts can be used to display 
 > Note: only fontAwesome and icomoon fonts are loaded by default, you can load
 > other icon fonts easily.
 
-Available fonts 
+**Available fonts** 
 
     primary: fontAwesome // default icon font
     afiado
@@ -181,7 +183,7 @@ Available fonts
     typicons
     wpzoom
 
-Loading other icon fonts
+**Loading other icon fonts**
 
 /Custom/Fonts.qml
 
@@ -206,7 +208,7 @@ Loading other icon fonts
         iconFonts: Custom.IconFonts{}
     }
     
-   Usage:
+   **Usage:**
 
     Icon
     {
@@ -215,7 +217,7 @@ Loading other icon fonts
       font.family: app.iconFonts.meteocons
     }
 
-  **colors**: AppColors
+###**colors**: AppColors
 
       default: AppColors{}
 This property all app colors available:
@@ -261,7 +263,7 @@ This property all app colors available:
 
     transparent: "transparent" 
 
-Usage:
+**Usage:**
 
     Text
     {
@@ -270,7 +272,7 @@ Usage:
         color: app.colors.blue
     }
      
-Custom Colors
+**Defining Custom Colors**
 
    */Custom/Colors.qml*
     
@@ -294,19 +296,19 @@ Custom Colors
         colors: Custom.Colors{}
     }
 
-  **soundEffects**: SoundEffects
+###**soundEffects**: SoundEffects
 
       default: undefined
 
 This property holds app avialable sound effects
 
-  **margins**: Margins
+###**margins**: Margins
 
       default: Margins{}
 
 A convenient type that holds some margins sizes
 
-Available sizes:
+**Available sizes:**
 
     none: 0
 
@@ -322,7 +324,7 @@ Available sizes:
     xxLarge: 40
     xxxLarge: 50
 
-Usage:
+**Usage:**
 
     import QtQuick 2.0
     
@@ -333,13 +335,13 @@ Usage:
     }
 
 
-  **spacing**: Spacing
+###**spacing**: Spacing
 
       default: Spacing{}
 
 A convenient type that holds some spaces sizes
 
-Available sizes:
+**Available sizes:**
 
     none: 0
 
@@ -355,7 +357,7 @@ Available sizes:
     xxLarge: 40
     xxxLarge: 50
     
-Usage:
+**Usage**:
 
         Column
         {
@@ -399,15 +401,14 @@ Usage:
             }
         }
         
-  **sizes**: Sizes
+###**sizes**: Sizes
 
       default: Sizes{}
 
 A convenient type that holds some sizes
 
-Available sizes:
-
-      default: Sizes{}
+      
+  **Available sizes:**
       
     none: 0
 
@@ -433,7 +434,7 @@ Available sizes:
     h7: 8
     h8: 6
 
-Usage:
+**Usage:**
 
     import QtQuick 2.0
     import Gurra 1.0
@@ -443,24 +444,26 @@ Usage:
         font.pointSize: app.sizes.h1
     }
 
-  **settings**: Settings
+###**settings**: Settings
 
-      default:
+      default: undefined
+      
+This property holds common app settings
 
-  **strings**: Strings
+###**strings**: Strings
 
       default: Strings{}
 This property holds common used strings like Ok, Yes, No, Cancel and so on
 
 > Important: This property may be removed from the next release
 
-  **models**: var
+###**models**: var
 
       default: undefined
       
 This property holds app available data models 
 
-/Custom/Models.qml
+*/Custom/Models.qml*
 
     Item
     {
@@ -469,7 +472,7 @@ This property holds app available data models
         property var cities: ["Cairo", "Tokyo", "Paris", "New York"]
         property var colors: [qsTr("Blue"), qsTr("White"), qsTr("Green"), qsTr("Yellow"), qsTr("Red"), qsTr("Orange"), qsTr("Black"), qsTr("Brown"), qsTr("Orange")]
     }
-main.qml
+*main.qml*
 
     import "customs" as Custom
     
@@ -479,47 +482,50 @@ main.qml
         models: Custom.Models{}
     }
     
-Usage: 
+**Usage**: 
 
     app.pick(qsTr("Select City"), app.models.cities, function(index, city){
                         console.log("you selected", index, city)
                     })
 
-  **params**: Params
+###**params**: Params
 
       default: Params{}
+      
 This property holds all dialog params available 
 
-import QtQuick 2.0
-import Gurra 1.0
+**Defining Custom Params**
 
-Params
-{
-    property DialogParams logout: DialogParams {
-        title: qsTr("Logout")
-        message: qsTr("Are you sure you want to logout?")
-        button1: qsTr("Yes")
-        button2: qsTr("No")
-        yesCallback: function(){
-            app.logic.logout()
-            app.replacePage([app.pages.home])
+    import QtQuick 2.0
+    import Gurra 1.0
+    
+    Params
+    {
+        property DialogParams logout: DialogParams {
+            title: qsTr("Logout")
+            message: qsTr("Are you sure you want to logout?")
+            button1: qsTr("Yes")
+            button2: qsTr("No")
+            yesCallback: function(){
+                app.logic.logout()
+                app.replacePage([app.pages.home])
+            }
         }
-    }
 
-   property DialogParams invalidEmail: DialogParams {
-        title: qsTr("Invalid")
-        message: qsTr("Please type a valid email.")
-        button1: qsTr("Ok")
-    }
+       property DialogParams invalidEmail: DialogParams {
+            title: qsTr("Invalid")
+            message: qsTr("Please type a valid email.")
+            button1: qsTr("Ok")
+        }
 
-   property DialogParams deletePic: DialogParams {
-        title: qsTr("Delete?")
-        message: qsTr("Are you sure you want to delete your picture?")
-        button1: qsTr("Ok")
-        button2: qsTr("Cancel")
-    }
+       property DialogParams deletePic: DialogParams {
+            title: qsTr("Delete?")
+            message: qsTr("Are you sure you want to delete your picture?")
+            button1: qsTr("Ok")
+            button2: qsTr("Cancel")
+        }
 
-main.qml
+*main.qml*
 
     import "customs" as Custom
     
@@ -529,7 +535,7 @@ main.qml
         params: Custom.Params{}
     }
     
-Usage: 
+**Usage**: 
 
        app.confirm(app.params.deletePic, function(){
                app.api.pics.remove(picture_id).then(function(){
@@ -539,43 +545,43 @@ Usage:
 
 
 
-  **layoutDirection**: int
+###**layoutDirection**: int
 
       default: Qt.LeftToRight
       
 This property holds the default layout direction of the app
 
-  **layoutMirroring**: bool
+###**layoutMirroring**: bool
 
       default: false
       
 This property holds whether layout mirroring is enabled or not
 
-  **childrenInherit**: bool
+###**childrenInherit**: bool
 
       default: false
       
 This property holds whether items children should inherit layout mirroring is enabled or not
 
-  **confirmExit**: bool
+###**confirmExit**: bool
 
       default: false
       
 If true, App will confirm the user before exit
 
-  **view**: StackView
+###**view**: StackView
 
-      default:
+      default: undefined
       
 This property holds the main StackView of the app. Gurra page routing currently supports StackView only
 
-  **restConsumer**: RestConsumer2
+###**restConsumer**: RestConsumer2
 
       default: RestConsumer2 {}
 
 This property holds the central RESFful network consumer, all Gurra componets use this RestConsumer2 to connect to restful services to do GET, POST, PUT or DELETE operations
 
-  **restConsumer3**: RestConsumer3
+###**restConsumer3**: RestConsumer3
 
       default: RestConsumer3 {}
 This property holds the central upload RESFful consumer, it's used by Uploader to upload files 
@@ -584,25 +590,184 @@ This property holds the central upload RESFful consumer, it's used by Uploader t
 #Functions
  
 
-   **ready(callback)**
-   **pushPage (page, params)**
-   **popPage (page)**
-   **replacePage (pages)**
-   **back ()**
-   **snack(message, action, actionCallback)**
-   **inform(params, yesCallback, noCallback)**
-   **message(title, message, button, okCallback)**
-   **confirm2(params, yesCallback, noCallback)**
-   **confirm(params, yesCallback, noCallback)**
-   **done()**
-   **loading(message)**
-   **notLoading()**
-   **input(params, yesCallback, noCallback)** 
-   **inputNumber(params, yesCallback, noCallback)**
-   **inputDate(params, yesCallback, noCallback)**
-   **inputTime(params, yesCallback, noCallback)**
-   **inputPhone(params, yesCallback, noCallback)**
-   **inputEmail(params, yesCallback, noCallback)**
-   **inputMultiline(params, yesCallback, noCallback)**
-   **inputUrl(params, yesCallback, noCallback)**
-   **pick(title, model, callback)**
+###**ready(callback)**
+Loads `Lazy` items and `LazyPage`'s with `high` priority. You should call this function after the `main.qml` file has completely loaded. `callback` is optional
+
+**Loading order:**
+
+- `Lazy` items with `high` priority
+- `Lazy` items with `low` priority 
+- `LazyPage` items with `high` priority
+
+> 	`LazyPage` items with `low` priority will be loaded by `app.pushPage()` before they get pushed onto `view`
+
+**Usage**
+
+    // delay creating lazy items until all app Components are ready
+    Timer {
+        interval: 500
+        running: true
+        onTriggered: {
+            app.ready(function(){
+	            //more startup code 
+            })
+        }
+    }
+
+
+> **Note**:  you shouldn't call this function in main.qml Component.onCompleted because Component.onCompleted running order is undefined and can not be used here.
+
+    
+
+###**pushPage (page)**
+Pushs a page onto `view`, page can be normal `AnaPage`, `LazyPage`, or an arrays of pages (normal or lazy or mixed)
+
+    app.pushPage(app.pages.search)
+    
+If pushed page is `LazyPage` and it is not loaded it will be loaded first before pushed on the view. All parameters found in `LazyPage.params` will be passed to the loaded page
+
+The loaded page will receive `beforeEnter` and `enter` signals before and after pushed on the view respectively .
+
+###**popPage (page)**
+Pops a page off `view`, page can be normal `AnaPage`, `LazyPage`, or an arrays of pages (normal or lazy or mixed)
+
+    app.popPage(app.pages.search)
+
+The popped off page will receive `beforeLeave` and `leave` signals before and after popped off the view respectively .
+
+###**replacePage (pages)**
+Replaces all pages in `view` with `pages`, `pages` can be normal `AnaPage`, `LazyPage`, or an arrays of pages (normal or lazy or mixed)
+
+    app.replacePage([app.pages.search, app.pages.login])
+
+The current page of `view` will receive `beforeLeave` and `leave` signals before and after popped off the view respectively .
+
+###**back ()**
+Pops a page off `view`. No`beforeLeave` nor `leave` signals will be emited
+ 
+###**snack(message, action, actionCallback)**
+Displays a Snackbar at the bottom of the app
+
+    app.snack(qsTr("Deleted message"), "UNDO", function(){
+		    console.log("undoing...")
+	   })
+If `action` was provided `actionCallback` signal will be emited if users clicks on the action label
+
+###**inform(params, yesCallback, noCallback)**
+Displays a popup to inform the user 
+ 
+
+     if (app.settings.member_id === 0){
+          app.inform(app.params.loginFirst)
+          return
+        }
+
+> **Note**: if provided, `yesCallback` and `noCallback` will override `params.yesCallback` and `params.noCallback`
+
+###**message(title, message, button, okCallback)**
+Displays a popup to inform the user 
+ 
+    app.message(qsTr("Error"), qsTr("Select at least one image."), function(){
+		console.log("will be called when popup is dismissed ")
+	})
+
+###**confirm(params, yesCallback, noCallback)**
+Displays a confirmation dialog 
+	
+	/Custom/Params.qml
+    property DialogParams logout: DialogParams {
+        title: qsTr("Logout?")
+        message: qsTr("Are you sure you want to logout?")
+        button1: qsTr("Yes")
+        button2: qsTr("No")
+        yesCallback: function(){
+            app.logic.logout()
+            app.replacePage([app.pages.home])
+        }
+    }
+    
+    //usage
+    app.confirm( app.params.logout )
+
+> **Note**: if provided, `yesCallback` and `noCallback` will override `params.yesCallback` and `params.noCallback`
+
+###**confirm2(params, yesCallback, noCallback)**
+Displays a confirmation dialog, just like `confirm` but params are a JavaScript object instead of DialogParams.
+
+    var params = {
+        title: qsTr("Delete image?"),
+        message: qsTr("Are you sure you want to delete this image?"),
+        button1: qsTr("Yes"),
+        button2: qsTr("No")
+    }
+    app.confirm2(params, function(){
+            app.api.images.remove(image_id).then(function(){
+                app.done()
+            },
+            function(){
+                app.inform(app.params.imageDeleteError)
+            })
+    })
+    
+> **Note**: if provided, `yesCallback` and `noCallback` will override `params.yesCallback` and `params.noCallback`
+
+###**done()**
+Displays a popup to inform the user that an operation has been done
+
+###**loading(message)**	
+Displays a loading popup with BusyIndicator item along with `message`, `message` is optional
+
+    app.loading()
+
+###**notLoading()**
+Hides the loading popup
+
+    app.notLoading()
+
+###**input(params, yesCallback, noCallback)** 
+Displays an input dialog to allow user to enter data
+
+**Example**:
+
+	//add this to /Custom/Params.qml
+    property DialogParams age: DialogParams {
+        title: qsTr("Enter you name")
+        message: qsTr("e.g. 60")
+        button1: qsTr("Ok")
+        button2: qsTr("Cancel")
+    }
+	
+	// usage
+	app.input(app.params.age, function(value){
+		console.log("your age is", value)
+	}
+
+> **Note**: the inputMethodHints property of the text field is set to Qt.ImhNone
+
+###**inputNumber(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhDigitsOnly
+
+###**inputDate(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.imhDate
+
+###**inputTime(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhTime
+
+###**inputPhone(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhDialableCharactersOnly
+
+###**inputEmail(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhEmailCharactersOnly
+
+###**inputMultiline(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhMultiLine
+
+###**inputUrl(params, yesCallback, noCallback)**
+Same as `input` with inputMethodHints property set to Qt.ImhUrlCharactersOnly
+
+###**pick(title, model, callback)**
+Displays a popup dialog to allow user to pick one item from `model`
+
+    app.pick(qsTr("Select City"), app.models.cities, function(index, city){
+                        console.log("you selected", index, city)
+                    })
