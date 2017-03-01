@@ -742,28 +742,28 @@ Displays an input dialog to allow user to enter data
 		console.log("your age is", value)
 	}
 
-> **Note**: the inputMethodHints property of the text field is set to Qt.ImhNone
+> **Note**: the `inputMethodHints` property of the text field is set to `Qt.ImhNone`
 
 ###**inputNumber(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.ImhDigitsOnly
+Same as `input` with `inputMethodHints` property set to `Qt.ImhDigitsOnly`
 
 ###**inputDate(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.imhDate
+Same as `input` with `inputMethodHints` property set to `Qt.imhDate`
 
 ###**inputTime(params, yesCallback, noCallback)**
 Same as `input` with inputMethodHints property set to Qt.ImhTime
 
 ###**inputPhone(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.ImhDialableCharactersOnly
+Same as `input` with `inputMethodHints` property set to `Qt.ImhDialableCharactersOnly`
 
 ###**inputEmail(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.ImhEmailCharactersOnly
+Same as `input` with `inputMethodHints` property set to `Qt.ImhEmailCharactersOnly`
 
 ###**inputMultiline(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.ImhMultiLine
+Same as `input` with `inputMethodHints` property set to `Qt.ImhMultiLine`
 
 ###**inputUrl(params, yesCallback, noCallback)**
-Same as `input` with inputMethodHints property set to Qt.ImhUrlCharactersOnly
+Same as `input` with `inputMethodHints` property set to `Qt.ImhUrlCharactersOnly`
 
 ###**pick(title, model, callback)**
 Displays a popup dialog to allow user to pick one item from `model`
