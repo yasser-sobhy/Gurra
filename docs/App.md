@@ -42,10 +42,23 @@
       
 This property holds whether the app is running in production mode or debug mode.
 
+Gurra make no use of this property internally right now, but you may use it to change the behavior of your code depending whether it is running in production or debug
+
+    Urls
+    {
+        root: app.production? "http://www.example.com:8080" :   http://localhost:8080"
+        
+        pictures: app.production? "http://example.com/uploads/" : "http://localhost/uploads/"
+    }
+
 ###**api**: QtObject
   
-  This property holds all app restful api 
+  This property holds all app restful api.
+
+Following the structure of Gurra app, you are encouraged to put your network-related code in one .qml file and reference this file using `api` property, this makes your code more readable and easily maintainable.
   
+
+**Example**:
 
     var user = {
     			  name: 'Jhon Due',
@@ -53,6 +66,7 @@ This property holds whether the app is running in production mode or debug mode.
     			  password: 'pass'
     			}
     			
+    // use app.api to access network-related code			
     app.api.users.create(user).then(function(response){
     	          console.log(response)
             })
@@ -61,27 +75,129 @@ This property holds whether the app is running in production mode or debug mode.
 
 This property holds all app logic 
 
+Just like `api`, following the structure of Gurra app, you are encouraged to put your logic code in one .qml file and reference this file using `logic` property, this makes your code more readable and easily maintainable.
+
+	// log user in
     app.logic.login(user_id)
+    
+	// do somthing
+	app.logic.doSomthing()
 
 ###**pages**: Item
  
  This property holds all app pages
+
+*/Custom/Pages.qml*
+
+    import QtQuick 2.0
+    
+    import Gurra 1.0
+    import "../pages"
+    
+    Item
+    {
+        property Home home: Home{} // not lazy, need to be loaded at startup
+    
+	    // lazy pages will be loaded when pushed using app.pushPage()
+	    
+	    //lazy pages with high priority will be loaded after main.qml is loaded
+	    
+        property LazyPage contactUsPage: LazyPage{
+            source: "qrc:/qml/pages/ContactUsPage.qml"
+        }
+        property LazyPage aboutPage: LazyPage{
+            source: "qrc:/qml/pages/AboutPage.qml"
+        }
+        property LazyPage loginPage: LazyPage{
+            source: "qrc:/qml/pages/LoginPage.qml"
+        }
+        property LazyPage joinUser: LazyPage{
+            source: "qrc:/qml/pages/JoinUser.qml"
+        }
+        property LazyPage search: LazyPage{
+            priority: high //load this after laoding main.qml
+            source: "qrc:/qml/pages/Search.qml"
+        }
+    }
+    
+   *main.qml*
+
+    import "customs" as Custom
+    App
+    {
+        id: app
+       pages: Custom.Pages{}
+    }
+
+**Usage**:
 
     app.pushPage(app.pages.search)
 
  
 ###**headers**: Item
  
-  This property holds headers for all pages of the app
+  This property holds headers for all app pages
   
+  */Custom/Headers.qml*
+
+    import QtQuick 2.5
+    import Gurra 1.0
+    
+    Item {
+    
+        property PageTitle home: PageTitle {
+            title: qsTr("Gurra")
+            onClose: app.popPage()
+        }
+    
+        property PageTitle listings: PageTitle {
+            title: qsTr("Listings")
+            rightIcon: app.icons.fontAwesome.bars
+            onClose: app.popPage()
+        }
+    
+        property PageTitle search: PageTitle {
+            title: qsTr("Search")
+            onClose: app.popPage()
+        }
+    
+        property PageTitle contactUs: PageTitle {
+            title: qsTr("Contact Gurra")
+            onClose: app.popPage()
+        }
+    
+        property PageTitle imageUploader: PageTitle {
+            title: qsTr("Images")
+            onClose: app.popPage()
+        }
+        
+        property PageTitle about: PageTitle {
+            title: qsTr("About Mzadat")
+            onClose: app.popPage()
+        }
+    
+        property PageTitle joinUser: PageTitle {
+            title: qsTr("Join Gurra")
+            onClose: app.popPage()
+        }
+    
+        property PageTitle login: PageTitle {
+            title: qsTr("Login")
+            onClose: app.popPage()
+        }
+    }
+   
+*main.qml*
 
     import QtQuick 2.7
     import QtQuick.Layouts 1.1
     import QtQuick.Controls 2.0
     import QtQuick.Controls.Material 2.0
-    
+   
+*/Pages/Search.qml*
+ 
     import Gurra 1.0
-    
+   
     AnaPage
     {
         header: app.headers.search
@@ -771,3 +887,4 @@ Displays a popup dialog to allow user to pick one item from `model`
     app.pick(qsTr("Select City"), app.models.cities, function(index, city){
                         console.log("you selected", index, city)
                     })
+
