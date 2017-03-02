@@ -14,51 +14,54 @@ RestConsumer2::~RestConsumer2()
 
 }
 
-void RestConsumer2::setHeaders(QNetworkRequest &request){
-
-    request.setRawHeader(QByteArray("Accept"), accept);
-    request.setRawHeader(QByteArray("Content-Type"), contentType );
-
-    // for services which support this
-    if(!idempotencyKey.isEmpty())
-        request.setRawHeader(QByteArray(idempotencyKeyString), idempotencyKey );
-
-    addHeaders(request);
+QByteArray RestConsumer2::host(){
+    return m_host;
 }
 
-void RestConsumer2::authenticate(QNetworkRequest &request){
+void RestConsumer2::setHost(QByteArray host){
+    m_host = host;
+    hostChanged(host);
+}
 
-    if(!username.isEmpty() && !password.isEmpty()){
+void RestConsumer2::addHeader(QByteArray key, QByteArray value){
+    headers.insert(key, value);
+}
 
-        QByteArray data = username + ":" + password;
-        request.setRawHeader("Authorization", "Basic " + data.toBase64());
-    }
-    else if (!token.isEmpty()){
-        request.setRawHeader("Authorization", "Bearer " + token);
+void RestConsumer2::addHeaders(QByteArray headers)
+{
+    if(!headers.isEmpty()) {
+        QByteArrayList list = headers.split(',');
+
+        for(QByteArray str : list)
+        {
+            QByteArrayList h = str.split('=');
+            if(h.size() == 2) this->headers.insert(h[0].trimmed(), h[1].trimmed());
+        }
     }
 }
 
-void RestConsumer2::setQueryParams(QUrl &url)
+void RestConsumer2::setQueryParams(QUrl &url, QString params)
 {
     QUrlQuery query;
 
-    if(!from.isEmpty() && !to.isEmpty()){
-        query.addQueryItem(fromString, from);
-        query.addQueryItem(toString, to);
-    }
+    if(!params.isEmpty()) {
+        QStringList list = params.split(',');
 
-    // example queryParams: from=1, to=10, date=10/8/2016
-    if(!queryParams.isEmpty()) {
-        QList<QByteArray> list = queryParams.split(',');
-
-        for(QByteArray qstr : list)
+        for(QString str : list)
         {
-            QList<QByteArray> q = qstr.split('=');
-            if(q.size() == 2) query.addQueryItem(q[0].trimmed(),q[1].trimmed());
+            QStringList q = str.split('=');
+            if(q.size() == 2) query.addQueryItem(q[0].trimmed(), q[1].trimmed());
         }
-    }
 
-    url.setQuery(query);
+        url.setQuery(query);
+    }
+}
+
+void RestConsumer2::setHeaders(QNetworkRequest &request)
+{
+    for(QByteArray h : headers.keys()){
+        request.setRawHeader(h, headers.value(h));
+    }
 }
 
 void RestConsumer2::parseNetworkResponse(QNetworkReply *reply){
@@ -95,19 +98,6 @@ void RestConsumer2::parseNetworkResponse(QNetworkReply *reply){
         return;
     }
 
-    QJsonDocument json;
-    QJsonParseError error;
-    json = QJsonDocument::fromJson(data, &error);
-
-    if(error.error == QJsonParseError::NoError)
-    {
-        // if server return list of resources, parse it and emit listReady signal
-        if(isList(reply, json)){
-            parseList(reply, json);
-            return;
-        }
-    }
-
     switch (reply->operation()){
 
     case QNetworkAccessManager::GetOperation:
@@ -117,24 +107,24 @@ void RestConsumer2::parseNetworkResponse(QNetworkReply *reply){
             this->cache.cache(rest->_cacheCategory, reply->url().toString(), data, rest->_cacheTtl);
         }
 
-        rest->ready(data); //idGet
+        rest->ready(data);
         rests.remove(reply);
         break;
     case QNetworkAccessManager::PostOperation:
 
-        rest->posted(data); //idPost
+        rest->posted(data);
         rests.remove(reply);
         break;
     case QNetworkAccessManager::PutOperation:
 
         this->cache.remove(rest->_cacheCategory, reply->url().toString());
-        rest->updated(data); //idPut
+        rest->updated(data);
         rests.remove(reply);
         break;
     case QNetworkAccessManager::DeleteOperation:
 
         this->cache.remove(rest->_cacheCategory, reply->url().toString());
-        rests[reply]->deleted(data); //idDelete
+        rests[reply]->deleted(data);
         rests.remove(reply);
         break;
     }
@@ -146,14 +136,11 @@ void RestConsumer2::removeRest(Rest *rest){
     rests.remove(rest->reply);
 }
 
-void RestConsumer2::get(Rest *rest, QByteArray resource, int from, int to, QByteArray addQuery){
+void RestConsumer2::get(Rest *rest, QByteArray resource, QString query){
 
-    QUrl url( host + resource );
+    QUrl url( m_host + resource );
 
-    this->from = QByteArray::number(from);
-    this->to = QByteArray::number(to);
-    queryParams = addQuery;
-    setQueryParams(url);
+    setQueryParams(url, query);
 
     if(rest->_cache) {
         QByteArray c = this->cache.get(rest->_cacheCategory, url.toString());
@@ -167,7 +154,6 @@ void RestConsumer2::get(Rest *rest, QByteArray resource, int from, int to, QByte
 
     QNetworkRequest request (url);
     setHeaders(request);
-    authenticate(request);
 
     qDebug() << "GET" << url.toString();
     QNetworkReply *replay = networkAccessManager.get(request);
@@ -177,113 +163,53 @@ void RestConsumer2::get(Rest *rest, QByteArray resource, int from, int to, QByte
     rests.insert(replay, rest);
 }
 
-void RestConsumer2::post(Rest *rest, QByteArray resource, QByteArray data, QByteArray addQuery){
+void RestConsumer2::post(Rest *rest, QByteArray resource, QByteArray data, QString query){
 
-    QUrl url(host + resource);
+    QUrl url(m_host + resource);
 
-    queryParams = addQuery;
-    setQueryParams(url);
+    setQueryParams(url, query);
 
     QNetworkRequest request (url);
     setHeaders(request);
-    authenticate(request);
 
     qDebug() << "POST" << url.toString();
     QNetworkReply *replay = networkAccessManager.post(request, data);
-    rests.insert(replay, rest);
-}
 
-void RestConsumer2::idGet(Rest *rest, QByteArray resource, QByteArray addQuery){
-
-    QUrl url(host + resource);
-
-    queryParams = addQuery;
-    setQueryParams(url);
-
-    QNetworkRequest request (url);
-    setHeaders(request);
-    authenticate(request);
-
-    qDebug() << "idGET" << url.toString();
-    QNetworkReply *replay = networkAccessManager.get(request);
-
-    // remove this rest if it gets deleted before receiving network response
     connect(rest, &Rest::destroying, this, &RestConsumer2::removeRest);
     rest->reply = replay;
     rests.insert(replay, rest);
 }
 
-void RestConsumer2::idPut(Rest *rest, QByteArray resource, QByteArray data, QByteArray addQuery){
+void RestConsumer2::put(Rest *rest, QByteArray resource, QByteArray data, QString query){
 
-    QUrl url(host + resource);
+    QUrl url(m_host + resource);
 
-    queryParams = addQuery;
-    setQueryParams(url);
+    setQueryParams(url, query);
 
     QNetworkRequest request (url);
     setHeaders(request);
-    authenticate(request);
 
+    qDebug() << "PUT" << url.toString();
     QNetworkReply *replay = networkAccessManager.put(request, data);
+
+    connect(rest, &Rest::destroying, this, &RestConsumer2::removeRest);
+    rest->reply = replay;
     rests.insert(replay, rest);
 }
 
-void RestConsumer2::idDelete(Rest *rest, QByteArray resource, QByteArray addQuery){
+void RestConsumer2::remove(Rest *rest, QByteArray resource, QString query){
 
-    QUrl url(host + resource);
+    QUrl url(m_host + resource);
 
-    queryParams = addQuery;
-    setQueryParams(url);
+    setQueryParams(url, query);
 
     QNetworkRequest request (url);
     setHeaders(request);
-    authenticate(request);
 
+    qDebug() << "DELETE" << url.toString();
     QNetworkReply *replay = networkAccessManager.deleteResource(request);
+
+    connect(rest, &Rest::destroying, this, &RestConsumer2::removeRest);
+    rest->reply = replay;
     rests.insert(replay, rest);
-}
-
-bool RestConsumer2::isList(QNetworkReply *reply, QJsonDocument &json)
-{
-    for (QString key : json.object().keys())
-    {
-        if( key != "links") {
-            if(json.object().value(key).isArray()){
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-void RestConsumer2::parseList(QNetworkReply *reply, QJsonDocument &json){
-
-    QJsonArray array;
-
-    // skip links value, and get the array value
-    for (QString key : json.object().keys())
-    {
-        if(key != "links") array = json.object().value(key).toArray();
-    }
-
-    QStringList list;
-    QStringListModel *model = new QStringListModel();
-
-    // convert every item to a standalone json object
-    for( int i =0; i < array.size(); i++){
-
-        QByteArray obj = QJsonDocument(array.at(i).toObject()).toJson();
-
-        list.append(obj);
-    }
-
-    model->setStringList(list);
-    rests[reply]->listReady(QVariant::fromValue(model));
-    rests.remove(reply);
-}
-
-void RestConsumer2::addHeaders(QNetworkRequest &request)
-{
-    return;
 }

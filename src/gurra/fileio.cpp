@@ -2,6 +2,8 @@
 #include <QFile>
 #include <QTextStream>
 
+using namespace Gurra;
+
 FileIO::FileIO(QObject *parent) :
     QObject(parent)
 {

@@ -26,7 +26,7 @@ public:
         QByteArrayList list = configi.get("MIME-TYPES", type.trimmed()).toByteArray().split(',');
 
         // return first extention, considered as default
-        if(list.empty()) return list.at(0);
+        if(!list.empty()) return list.at(0);
 
         return QByteArray();
     }

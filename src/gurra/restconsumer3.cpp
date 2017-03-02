@@ -14,52 +14,55 @@ RestConsumer3::~RestConsumer3()
 
 }
 
-void RestConsumer3::setHeaders(QNetworkRequest &request){
-
-    request.setRawHeader(QByteArray("Accept"), accept);
-    request.setRawHeader(QByteArray("Content-Type"), contentType );
-
-    // for services which support this
-    if(!idempotencyKey.isEmpty())
-        request.setRawHeader(QByteArray(idempotencyKeyString), idempotencyKey );
-
-    addHeaders(request);
+QByteArray RestConsumer3::host(){
+    return m_host;
 }
 
-void RestConsumer3::authenticate(QNetworkRequest &request){
+void RestConsumer3::setHost(QByteArray host){
+    m_host = host;
+    hostChanged(host);
+}
 
-    if(!username.isEmpty() && !password.isEmpty()){
+void RestConsumer3::addHeader(QByteArray key, QByteArray value){
+    headers.insert(key, value);
+}
 
-        QByteArray data = username + ":" + password;
-        request.setRawHeader("Authorization", "Basic " + data.toBase64());
-    }
-    else if (!token.isEmpty()){
-        request.setRawHeader("Authorization", "Bearer " + token);
+void RestConsumer3::addHeaders(QByteArray headers)
+{
+    if(!headers.isEmpty()) {
+        QByteArrayList list = headers.split(',');
+
+        for(QByteArray str : list)
+        {
+            QByteArrayList h = str.split('=');
+            if(h.size() == 2) this->headers.insert(h[0].trimmed(), h[1].trimmed());
+        }
     }
 }
 
-void RestConsumer3::setQueryParams(QUrl &url)
+void RestConsumer3::setQueryParams(QUrl &url, QString params)
 {
     QUrlQuery query;
 
-    if(!from.isEmpty() && !to.isEmpty()){
-        query.addQueryItem(fromString, from);
-        query.addQueryItem(toString, to);
-    }
+    if(!params.isEmpty()) {
+        QStringList list = params.split(',');
 
-    // example queryParams: from=1, to=10, date=10/8/2016
-    if(!queryParams.isEmpty()) {
-        QList<QByteArray> list = queryParams.split(',');
-
-        for(QByteArray qstr : list)
+        for(QString str : list)
         {
-            QList<QByteArray> q = qstr.split('=');
-            if(q.size() == 2) query.addQueryItem(q[0].trimmed(),q[1].trimmed());
+            QStringList q = str.split('=');
+            if(q.size() == 2) query.addQueryItem(q[0].trimmed(), q[1].trimmed());
         }
     }
 
     url.setQuery(query);
 }
+void RestConsumer3::setHeaders(QNetworkRequest &request)
+{
+    for(QByteArray h : headers.keys()){
+        request.setRawHeader(h, headers.value(h));
+    }
+}
+
 
 void RestConsumer3::parseNetworkResponse(QNetworkReply *reply){
 
@@ -129,7 +132,6 @@ void RestConsumer3::upload(RestUploader *rest, QByteArray resource, QString file
 
     if(!data.isEmpty()){
         QHttpPart textPart;
-        textPart.setHeader(QNetworkRequest::ContentTypeHeader, contentType);
         textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"text\""));
         textPart.setBody(data);
         multiPart->append(textPart);
@@ -160,15 +162,12 @@ void RestConsumer3::upload(RestUploader *rest, QByteArray resource, QString file
         multiPart->append(filePart);
     }
 
-    QUrl url(host + resource);
-    setQueryParams(url);
+    QUrl url(m_host + resource);
+    setQueryParams(url, "");
 
     QNetworkRequest request (url);
 
-    request.setRawHeader(QByteArray("Accept"), accept);
     request.setRawHeader(QByteArray("Content-Type"), "multipart/form-data; boundary=boundary_.oOo._56354654654654321768987465413574634354658" );
-
-    authenticate(request);
 
     if(put){
         QNetworkReply *replay = networkAccessManager.put(request, multiPart);
@@ -180,9 +179,4 @@ void RestConsumer3::upload(RestUploader *rest, QByteArray resource, QString file
         connect(replay, &QNetworkReply::uploadProgress, rest, &RestUploader::progress);
         rests.insert(replay, rest);
     }
-}
-
-void RestConsumer3::addHeaders(QNetworkRequest &request)
-{
-    return;
 }

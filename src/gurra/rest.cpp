@@ -7,24 +7,20 @@ Rest::~Rest() {
    emit destroying(this);
 }
 
-void Rest::get(QByteArray resource,  int from, int to, QByteArray addQuery){
-    m_restConsumer->get(this, resource, from, to, addQuery);
+void Rest::get(QByteArray resource, QString query){
+    m_restConsumer->get(this, resource, query);
 }
 
-void Rest::post(QByteArray resource, QByteArray data, QByteArray addQuery){
-    m_restConsumer->post(this, resource, data, addQuery);
+void Rest::post(QByteArray resource, QByteArray data, QString query){
+    m_restConsumer->post(this, resource, data, query);
 }
 
-void Rest::idGet(QByteArray resource, QByteArray addQuery){
-    m_restConsumer->idGet(this, resource, addQuery);
+void Rest::put(QByteArray resource, QByteArray data, QString query){
+    m_restConsumer->put(this, resource, data, query);
 }
 
-void Rest::idPut(QByteArray resource, QByteArray data, QByteArray addQuery){
-    m_restConsumer->idPut(this, resource, data, addQuery);
-}
-
-void Rest::idDelete(QByteArray resource, QByteArray addQuery){
-    m_restConsumer->idDelete(this, resource, addQuery);
+void Rest::remove(QByteArray resource, QString query){
+    m_restConsumer->remove(this, resource, query);
 }
 
 RestConsumer2* Rest::getRestConsumer(){

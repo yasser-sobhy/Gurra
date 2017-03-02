@@ -18,6 +18,8 @@ class RestUploader;
 
 class RestConsumer3 : public QObject
 {
+    Q_PROPERTY(QByteArray host READ host WRITE setHost NOTIFY hostChanged)
+
     Q_OBJECT
 
 public:
@@ -25,30 +27,30 @@ public:
     ~RestConsumer3();
 
 public slots:
+
+    QByteArray host();
+    void setHost(QByteArray host);
+
+    void addHeader(QByteArray key, QByteArray value);
+
     void upload(RestUploader *rest, QByteArray resource, QString file, bool put);
     void upload(RestUploader *rest, QByteArray resource, QString file, QByteArray data, bool put);
 
-protected:
-    // add any service-specific headers
-    virtual void addHeaders(QNetworkRequest &request);
+signals:
+    void hostChanged(QByteArray host);
 
 private slots:
     void parseNetworkResponse(QNetworkReply *reply );
 
 private:
+    void setQueryParams(QUrl &url, QString params);
+    void addHeaders(QByteArray headers);
     void setHeaders(QNetworkRequest &request);
-    void setQueryParams(QUrl &url);
-    void authenticate(QNetworkRequest &request);
 
     MimeTypes mimeTypes;
 
-    QByteArray idempotencyKey, idempotencyKeyString = "Idempotency-Key";
-    QByteArray from, to, fromString = "from", toString = "to";
-    QByteArray username, password, token, queryParams;
-    QByteArray accept = "application/json", contentType = "application/json";
-
-    QByteArray host = "http://saooom.com:8080";
-    //QByteArray host = "http://localhost:8080";
+    QByteArray m_host;
+    QHash<QByteArray, QByteArray> headers;
 
     QNetworkAccessManager networkAccessManager;
     QHash<QNetworkReply* ,RestUploader *> rests;

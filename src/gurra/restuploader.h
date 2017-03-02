@@ -57,7 +57,6 @@ signals:
 
     void networkError( QNetworkReply::NetworkError err );
     void serverError(const QByteArray err);
-    void badConentError();
 
     // errors issued by RestConsumer before sending a request
     void error(const QByteArray err);

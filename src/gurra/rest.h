@@ -36,12 +36,11 @@ public:
     ~Rest();
 
 public slots:
-    void get(QByteArray resource,  int from = 0, int to = 9, QByteArray addQuery = "");
-    void post(QByteArray resource, QByteArray data, QByteArray addQuery = "");
+    void get(QByteArray resource, QString query = "");
+    void post(QByteArray resource, QByteArray data, QString query = "");
 
-    void idGet(QByteArray resource, QByteArray addQuery = "");
-    void idPut(QByteArray resource, QByteArray data, QByteArray addQuery = "");
-    void idDelete(QByteArray resource, QByteArray addQuery = "");
+    void put(QByteArray resource, QByteArray data, QString query = "");
+    void remove(QByteArray resource, QString query = "");
 
     void setRestConsumer(RestConsumer2 *consumer);
     RestConsumer2* getRestConsumer();
@@ -57,23 +56,20 @@ public slots:
 
 signals:
 
-    void ready(const QByteArray rawData); //idGet
-    void listReady(const QVariant rawDataList); //get
+    virtual void ready(const QByteArray rawData);
 
-    void posted(const QByteArray rawData); // post
-    void updated(const QByteArray rawData); // idPut
-    void deleted(const QByteArray rawData); // idDelete
+    virtual void posted(const QByteArray rawData);
+    virtual void updated(const QByteArray rawData);
+    virtual void deleted(const QByteArray rawData);
 
-    void networkError( QNetworkReply::NetworkError err );
-    void serverError(const QByteArray err);
-    void badConentError();
+    virtual void networkError( QNetworkReply::NetworkError err );
+    virtual void serverError(const QByteArray err);
 
     // errors issued by RestConsumer before sending a request
-    void error(const QByteArray err);
+    virtual void error(const QByteArray err);
+    virtual void destroying(Rest *rest);
 
-    void destroying(Rest *rest);
-
-private:
+protected:
 
     bool _cache = false;
     bool _cacheTtl = _30SEC;

@@ -24,6 +24,8 @@ class Rest;
 
 class RestConsumer2 : public QObject
 {
+    Q_PROPERTY(QByteArray host READ host WRITE setHost NOTIFY hostChanged)
+
     Q_OBJECT
 
 public:
@@ -31,45 +33,38 @@ public:
     ~RestConsumer2();
 
 public slots:
-    void get(Rest *rest, QByteArray resource,  int from = 0, int to = 9, QByteArray addQuery = "");
-    void post(Rest *rest, QByteArray resource, QByteArray data, QByteArray addQuery = "");
 
-    void idGet(Rest *rest, QByteArray resource, QByteArray addQuery = "");
-    void idPut(Rest *rest, QByteArray resource, QByteArray data, QByteArray addQuery = "");
-    void idDelete(Rest *rest, QByteArray resource, QByteArray addQuery = "");
+    QByteArray host();
+    void setHost(QByteArray host);
 
-protected:
-    // checks whether the returned result is a list of resurces or not
-    virtual bool isList(QNetworkReply *reply, QJsonDocument &json);
+    void addHeader(QByteArray key, QByteArray value);
 
-    // if returned result is list, parse it and emit signal
-    virtual void parseList(QNetworkReply *reply, QJsonDocument &json);
+    void get(Rest *rest, QByteArray resource, QString query = "");
+    void post(Rest *rest, QByteArray resource, QByteArray data, QString query = "");
 
-    // add any service-specific headers
-    virtual void addHeaders(QNetworkRequest &request);
+    void put(Rest *rest, QByteArray resource, QByteArray data, QString query = "");
+    void remove(Rest *rest, QByteArray resource, QString query = "");
+
+signals:
+    void hostChanged(QByteArray host);
 
 private slots:
     void parseNetworkResponse(QNetworkReply *reply );
     void removeRest(Rest *rest);
 
 private:
+    void setQueryParams(QUrl &url, QString params);
+    void addHeaders(QByteArray headers);
     void setHeaders(QNetworkRequest &request);
-    void setQueryParams(QUrl &url);
-    void authenticate(QNetworkRequest &request);
 
     MimeTypes mimeTypes;
 
-    QByteArray idempotencyKey, idempotencyKeyString = "Idempotency-Key";
-    QByteArray from, to, fromString = "from", toString = "to";
-    QByteArray username, password, token, queryParams;
-    QByteArray accept = "application/json", contentType = "application/json";
+    QByteArray m_host;
+    QHash<QByteArray, QByteArray> headers;
 
-    QByteArray host = "http://saooom.com:8080";
-    //QByteArray host = "http://localhost:8080";
-
-    QNetworkAccessManager networkAccessManager;
-    QHash<QNetworkReply* ,Rest *> rests;
     AnaCache cache;
+    QHash<QNetworkReply* ,Rest *> rests;
+    QNetworkAccessManager networkAccessManager;
 };
 
 }
