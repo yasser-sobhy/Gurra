@@ -3,7 +3,7 @@
 
 ##Installation
 
-Download app.tar.gz template, extract it and start coding :)
+Download `app.tar.gz` template, extract it and start coding :)
 
 ##Screenshots
 [screenshots](/screenshots/README.md)
