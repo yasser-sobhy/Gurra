@@ -35,13 +35,13 @@ this property holds the `ListItem's` description
 this property holds whether to show a seperator at the bottom of ListItem or not
 
 ###**iconItem**: Icon
-this property holds a regerence to the internal icon
+this property holds a reference to the internal icon
 
 ###**titleItem**: Label
-this property holds a regerence to the internal title label
+this property holds a reference to the internal title label
 
 ###**descriptionItem**: Label
-this property holds a regerence to the internal description label
+this property holds a reference to the internal description label
 
 ###**rowSpacing**: int
 this property holds the spacing between icon and labels
