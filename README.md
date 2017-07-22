@@ -1,4 +1,3 @@
-
 #Gurra is a QML ui framework, it has many easy-to-use components and unified structure
 
 ##Installation
@@ -9,6 +8,7 @@ Download `app.tar.gz` template, extract it and start coding :)
 [screenshots](/screenshots/README.md)
 
 ##Getting Started
+
 Ongoing documentation https://yasser-sobhy.github.io/Gurra/
 
 ##App Structure
