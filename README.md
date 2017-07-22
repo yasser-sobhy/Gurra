@@ -9,6 +9,7 @@ Download `app.tar.gz` template, extract it and start coding :)
 [screenshots](/screenshots/README.md)
 
 ##Getting Started
+Ongoing documentation https://yasser-sobhy.github.io/Gurra/
 
 ##App Structure
 
